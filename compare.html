@@ -1,0 +1,65 @@
+<!doctype html><html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compare BMW Models</title>
+<link rel="stylesheet" href="/styles.css"></head><body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg" alt="BMW logo">BMWGuide.org</a>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/compare.html">Compare</a></li>
+        <li><a href="/guides/index.html">Guides</a></li>
+      </ul>
+      <a class="cta" href="/contact.html">Contact</a>
+    </div>
+  </nav>
+  <div class="container">
+<section class="panel"><h2>Compare Models</h2>
+<p class="small">Pick any two models to see key specs side by side.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<select id="a"></select><select id="b"></select>
+<button id="go" class="cta" style="padding:8px 12px;border-width:3px">Compare</button>
+</div></section>
+<section id="result"></section>
+<script id="dataset" type="application/json"></script>
+<script>
+const data = JSON.parse(localStorage.getItem('bmw_data') || '[]');
+document.getElementById('dataset').textContent = JSON.stringify(data);
+function fill(sel){ sel.innerHTML = data.map(d=>`<option value="${d.id}">${d.name}</option>`).join(''); }
+fill(document.getElementById('a')); fill(document.getElementById('b'));
+function row(label, av, bv){ return `<tr><th style="text-align:left;border:1px solid #000;padding:8px">${label}</th><td style="border:1px solid #000;padding:8px">${av||''}</td><td style="border:1px solid #000;padding:8px">${bv||''}</td></tr>`; }
+document.getElementById('go').onclick = ()=>{
+  const A = data.find(x=>x.id===document.getElementById('a').value);
+  const B = data.find(x=>x.id===document.getElementById('b').value);
+  const html = `
+  <section class="panel">
+    <h2>${A.name} vs ${B.name}</h2>
+    <table style="width:100%;border-collapse:collapse">
+      ${row('Price', '$'+A.price.toLocaleString(), '$'+B.price.toLocaleString())}
+      ${row('Powertrain', A.details['powertrain'], B.details['powertrain'])}
+      ${row('0-60', A.details['0-60']||'', B.details['0-60']||'')}
+      ${row('Range (EV/PHEV)', A.details['range']||'', B.details['range']||'')}
+      ${row('Drivetrain', A.categories.join(', '), B.categories.join(', '))}
+    </table>
+  </section>`;
+  document.getElementById('result').innerHTML = html;
+};
+</script>
+<footer>
+      <div class="cols">
+        <div class="tile">
+          <h4>About</h4>
+          <p>BMWGuide.org is an independent directory. We are not affiliated with BMW AG.</p>
+        </div>
+        <div class="tile">
+          <h4>Disclosure</h4>
+          <p>Links may be affiliate or referral. Verify specs with the official site.</p>
+        </div>
+      </div>
+      <div class="small" style="margin-top:8px">
+        <a href="/privacy.html">Privacy</a> • <a href="/terms.html">Terms</a> • 
+        <a href="/cookies.html">Cookies</a> • <a href="/accessibility.html">Accessibility</a> • 
+        <a href="/disclaimer.html">Disclaimer</a>
+      </div>
+    </footer>
+  </div></body></html>

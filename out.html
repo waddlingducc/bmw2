@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Leaving BMWGuide.org…</title>
+  <link rel="stylesheet" href="/styles.css">
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  </style>
+</head>
+<body>
+  <nav class="nav"><div class="nav-inner">
+    <a class="brand" href="/"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg" alt="BMW logo">BMWGuide.org</a>
+  </div></nav>
+
+  <div class="container">
+    <section class="panel">
+      <h2>Redirecting you to BMWUSA</h2>
+      <p class="small">If you are not redirected automatically, use the button below.</p>
+      <a id="go" class="cta" href="#" rel="noopener nofollow">Open model page</a>
+    </section>
+  </div>
+
+  <script>
+  // Direct map for every listing ID → official BMWUSA page.
+  // (Edit/extend here if you add more listings.)
+  const MAP = {
+    /* Core listings */
+    "bmw-2-series-coupe": "https://www.bmwusa.com/vehicles/2-series/coupe/overview.html",
+    "bmw-m2": "https://www.bmwusa.com/vehicles/m-series/bmw-2-series-m-models/bmw-m2-coupe.html",
+
+    "bmw-3-series": "https://www.bmwusa.com/vehicles/3-series/sedan/overview.html",
+    "bmw-m3-competition": "https://www.bmwusa.com/vehicles/m-series/m3-series/bmw-m3-sedan.html",
+
+    "bmw-4-series-gran-coupe": "https://www.bmwusa.com/vehicles/4-series/gran-coupe/overview.html",
+    "bmw-m4-competition": "https://www.bmwusa.com/vehicles/m-series/bmw-4-series-m-models/bmw-m4-coupe.html",
+
+    "bmw-5-series": "https://www.bmwusa.com/vehicles/5-series/sedan/overview.html",
+    "bmw-i5": "https://www.bmwusa.com/vehicles/all-electric/i5/sedan/overview.html",
+
+    "bmw-x3": "https://www.bmwusa.com/vehicles/x-models/x3/sports-activity-vehicle/overview.html",
+    "bmw-x5": "https://www.bmwusa.com/vehicles/x-models/x5/sports-activity-vehicle/overview.html",
+
+    "bmw-i4-m50": "https://www.bmwusa.com/vehicles/m-series/i4-m50/bmw-i4-m50-gran-coupe.html#technical-data",
+    "bmw-ix": "https://www.bmwusa.com/vehicles/all-electric/ix/sports-activity-vehicle/overview.html",
+
+    /* Your added/updated listings */
+    "bmw-m340i-xdrive": "https://www.bmwusa.com/vehicles/m-series/m3-series/bmw-m3-sedan.html",
+    "bmw-m240i-xdrive": "https://www.bmwusa.com/vehicles/m-series/bmw-2-series-m-models/bmw-m2-coupe.html",
+    "bmw-m440i-gran-coupe": "https://www.bmwusa.com/vehicles/m-series/4-series-m440i/bmw-m440i-xdrive-gran-coupe.html",
+    "bmw-x3-m40i": "https://www.bmwusa.com/vehicles/x-series/x3/x3-2024-g45.html",
+    "bmw-x1-m35i": "https://www.bmwusa.com/vehicles/x-models/x1/sports-activity-vehicle/overview.html",
+    "bmw-i5-m60": "https://www.bmwusa.com/vehicles/all-electric/i5/sedan/overview.html",
+    "bmw-i7-m70": "https://www.bmwusa.com/vehicles/all-electric/i7/sedan/overview.html",
+    "bmw-m850i-xdrive-coupe": "https://www.bmwusa.com/vehicles/8-series/coupe/bmw-m.html",
+    "bmw-z4-m40i": "https://www.bmwusa.com/vehicles/z4/roadster/overview.html",
+    "bmw-m5-touring": "https://www.bmwusa.com/vehicles/m-series/m5-series/bmw-m5-touring.html",
+    "bmw-m4-convertible": "https://www.bmwusa.com/vehicles/m-series/bmw-4-series-m-models/bmw-m4-convertible.html",
+    "bmw-x6-m": "https://www.bmwusa.com/vehicles/m-models/x6-m/suv/overview.html",
+    "bmw-x4-m": "https://www.bmwusa.com/vehicles/m-models/x4-m/suv/overview.html"
+  };
+
+  // BMWUSA-only fallback (no search/captcha).
+  function fallbackURL(id){
+    if (!id) return "https://www.bmwusa.com/vehicles.html";
+    if (id.startsWith("bmw-m")) return "https://www.bmwusa.com/vehicles/bmw-m/models.html#performance-m-models";
+    if (id.includes("i7")) return "https://www.bmwusa.com/vehicles/all-electric/i7/sedan/overview.html";
+    if (id.includes("i5")) return "https://www.bmwusa.com/vehicles/all-electric/i5/sedan/overview.html";
+    if (id.includes("i4")) return "https://www.bmwusa.com/vehicles/all-electric/i4/gran-coupe/overview.html";
+    if (id.includes("x1")) return "https://www.bmwusa.com/vehicles/x-models/x1/sports-activity-vehicle/overview.html";
+    if (id.includes("x3")) return "https://www.bmwusa.com/vehicles/x-models/x3/sports-activity-vehicle/overview.html";
+    if (id.includes("x5")) return "https://www.bmwusa.com/vehicles/x-models/x5/sports-activity-vehicle/overview.html";
+    if (id.includes("8"))  return "https://www.bmwusa.com/vehicles/8-series/coupe/overview.html";
+    if (id.includes("7"))  return "https://www.bmwusa.com/vehicles/7-series/sedan/overview.html";
+    if (id.includes("5"))  return "https://www.bmwusa.com/vehicles/5-series/sedan/overview.html";
+    if (id.includes("4"))  return "https://www.bmwusa.com/vehicles/4-series/gran-coupe/overview.html";
+    if (id.includes("3"))  return "https://www.bmwusa.com/vehicles/3-series/sedan/overview.html";
+    if (id.includes("2"))  return "https://www.bmwusa.com/vehicles/2-series/coupe/overview.html";
+    return "https://www.bmwusa.com/vehicles.html";
+  }
+
+  (function(){
+    const params = new URLSearchParams(location.search);
+    const id = (params.get('id') || '').trim();
+    const url = MAP[id] || fallbackURL(id);
+    document.getElementById('go').href = url;
+    // Use replace() so the user can't hit back into this interstitial
+    setTimeout(()=>location.replace(url), 150);
+  })();
+  </script>
+</body>
+</html>
